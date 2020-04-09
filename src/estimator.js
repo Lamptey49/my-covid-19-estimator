@@ -123,13 +123,13 @@ const SevereImpact = {
 
 };
 const covid19ImpactEstimator = (data) => {
-  const input = data;
+  const inputs = data;
   return {
-    data: input,
+    data: inputs,
     impact: { impact },
     SevereImpact: { SevereImpact }
   };
 };
-covid19ImpactEstimator(input, impact, SevereImpact);
+covid19ImpactEstimator(inputs, impact, SevereImpact);
 
 export default covid19ImpactEstimator;
