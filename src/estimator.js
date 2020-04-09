@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 
 const input = {
   region: {
@@ -123,13 +124,14 @@ const SevereImpact = {
 
 };
 const covid19ImpactEstimator = (data) => {
-  const inputs = data;
+  const input = data;
   return {
-    data: inputs,
+    data: input,
     impact: { impact },
     SevereImpact: { SevereImpact }
   };
 };
-covid19ImpactEstimator(inputs, impact, SevereImpact);
+
+covid19ImpactEstimator(input, impact, SevereImpact);
 
 export default covid19ImpactEstimator;
