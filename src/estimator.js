@@ -26,15 +26,15 @@ const CalcaulateCurrentlyInfected2 = () => {
 const CalcaulateInfectionsByRequestTime = () => {
   const infections = CalcaulateCurrentlyInfected() * 1024;
   if (input.periodType === 'days') {
-    const answer = infections * input.timeToElapse;
+    const answer = ((infections * input.timeToElapse) / 3);
     return answer;
   }
   if (input.periodType === 'weeks') {
-    const answer = infections * input.timeToElapse * 7;
+    const answer = ((infections * input.timeToElapse * 7) / 3);
     return answer;
   }
   if (input.periodType === 'months') {
-    const answer = infections * input.timeToElapse * 30;
+    const answer = ((infections * input.timeToElapse * 30) / 3);
     return answer;
   }
   return infections;
@@ -96,11 +96,11 @@ const CalculateCasesForVentilatorsByRequestedTime2 = () => {
   return casesforventitlators;
 };
 const CalculateDollarsInFlight = () => {
-  const dollars = (CalcaulateCurrentlyInfected() * (0.65 * 1.5 * 30));
+  const dollars = ((CalcaulateCurrentlyInfected() * (0.65 * 1.5)) / 30);
   return dollars;
 };
 const CalculateDollarsInFlight2 = () => {
-  const dollars = (CalcaulateCurrentlyInfected2() * (0.65 * 1.5 * 30));
+  const dollars = ((CalcaulateCurrentlyInfected2() * (0.65 * 1.5)) / 30);
   return dollars;
 };
 
@@ -134,4 +134,4 @@ const covid19ImpactEstimator = (data) => {
 
 covid19ImpactEstimator(input, impact, SevereImpact);
 
-export default covid19ImpactEstimator;
+// export default covid19ImpactEstimator;
