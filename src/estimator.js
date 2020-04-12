@@ -1,5 +1,4 @@
-/* eslint-disable no-shadow */
-
+/* eslint-disable no-undef */
 const input = {
   region: {
     name: 'Africa',
@@ -7,7 +6,7 @@ const input = {
     avgDailyIncomeInUSD: 5,
     avgDailyIncomePopulation: 0.71
   },
-  periodType: 'days',
+  periodType: 'weeks',
   timeToElapse: 58,
   reportedCases: 674,
   population: 66622705,
@@ -15,123 +14,53 @@ const input = {
 };
 
 
-const CalcaulateCurrentlyInfected = () => {
-  const currently = input.reportedCases * 10;
-  return currently;
-};
-const CalcaulateCurrentlyInfected2 = () => {
-  const currently = input.reportedCases * 50;
-  return currently;
-};
-const CalcaulateInfectionsByRequestTime = () => {
-  const infections = CalcaulateCurrentlyInfected() * 1024;
-  if (input.periodType === 'days') {
-    const answer = ((infections * input.timeToElapse) / 3);
-    return answer;
+const casesReported = (cases, value) => cases * value;
+function InfectionsRequestedTime(typeofPeriod, ellapsedTime) {
+  const period = typeofPeriod.toLowerCase();
+  let convertime;
+  switch (period) {
+    case 'months':
+      convertime = Math.trunc((ellapsedTime / 3) * 30);
+      break;
+    case 'weeks':
+      convertime = Math.trunc((ellapsedTime / 3) * 7);
+    // eslint-disable-next-line no-fallthrough
+    default:
+      convertime = Math.trunc(ellapsedTime / 3);
+      break;
   }
-  if (input.periodType === 'weeks') {
-    const answer = ((infections * input.timeToElapse * 7) / 3);
-    return answer;
-  }
-  if (input.periodType === 'months') {
-    const answer = ((infections * input.timeToElapse * 30) / 3);
-    return answer;
-  }
-  return infections;
-};
-const CalcaulateInfectionsByRequestTime2 = () => {
-  const infections = CalcaulateCurrentlyInfected2() * 1024;
-  if (input.periodType === 'days') {
-    const answer = infections * input.timeToElapse;
-    return answer;
-  }
-  if (input.periodType === 'weeks') {
-    const answer = infections * input.timeToElapse * 7;
-    return answer;
-  }
-  if (input.periodType === 'months') {
-    const answer = infections * input.timeToElapse * 30;
-    return answer;
-  }
-  return infections;
-};
-const CalcaulateSeverCasesByRequestedTime = () => {
-  const severecase = (0.15 * CalcaulateInfectionsByRequestTime());
-  if (input.periodType === 'days') {
-    const answer = severecase * input.timeToElapse;
-    return answer;
-  }
-  if (input.periodType === 'weeks') {
-    const answer = severecase * input.timeToElapse * 7;
-    return answer;
-  }
-  if (input.periodType === 'months') {
-    const answer = severecase * input.timeToElapse * 30;
-    return answer;
-  }
-  return severecase;
-};
-const CalculateHospitalBeds = () => {
-  const hospitalBeds = (input.totalHospitalBeds * 0.35 * 23);
-  return hospitalBeds;
-};
-const CalculateHospitalBeds2 = () => {
-  const hospitalBeds = (input.totalHospitalBeds * 0.35 * 23);
-  return hospitalBeds;
-};
-const CalculateCasesForICUByRequestedTime = () => {
-  const casesforicu = (0.15 * CalcaulateCurrentlyInfected());
-  return casesforicu;
-};
-const CalculateCasesForICUByRequestedTime2 = () => {
-  const casesforicu = (0.15 * CalcaulateCurrentlyInfected2());
-  return casesforicu;
-};
-const CalculateCasesForVentilatorsByRequestedTime = () => {
-  const casesforventitlators = (0.2 * CalcaulateCurrentlyInfected());
-  return casesforventitlators;
-};
-const CalculateCasesForVentilatorsByRequestedTime2 = () => {
-  const casesforventitlators = (0.2 * CalcaulateCurrentlyInfected());
-  return casesforventitlators;
-};
-const CalculateDollarsInFlight = () => {
-  const dollars = ((CalcaulateCurrentlyInfected() * (0.65 * 1.5)) / 30);
-  return dollars;
-};
-const CalculateDollarsInFlight2 = () => {
-  const dollars = ((CalcaulateCurrentlyInfected2() * (0.65 * 1.5)) / 30);
-  return dollars;
-};
-
+  return convertime;
+}
 const impact = {
-  currentlyInfected: CalcaulateCurrentlyInfected(),
-  infectionsByRequestedTime: CalcaulateInfectionsByRequestTime(),
-  severeCasesByRequestedTime: CalcaulateSeverCasesByRequestedTime(),
-  hospitalBedsByRequestedTime: CalculateHospitalBeds(),
-  casesForICUByRequestedTime: CalculateCasesForICUByRequestedTime(),
-  casesForVentilatorsByRequestedTime: CalculateCasesForVentilatorsByRequestedTime(),
-  dollarsInFlight: CalculateDollarsInFlight()
+  currentlyInfected: casesReported(input.reportedCases, 10)
 };
-const SevereImpact = {
-  currentlyInfected: CalcaulateCurrentlyInfected2(),
-  infectionsByRequestedTime: CalcaulateInfectionsByRequestTime2(),
-  severeCasesByRequestedTime: CalcaulateSeverCasesByRequestedTime(),
-  hospitalBedsByRequestedTime: CalculateHospitalBeds2(),
-  casesForICUByRequestedTime: CalculateCasesForICUByRequestedTime2(),
-  casesForVentilatorsByRequestedTime: CalculateCasesForVentilatorsByRequestedTime2(),
-  dollarsInFlight: CalculateDollarsInFlight2()
 
+const SevereImpact = {
+  currentlyInfected: casesReported(input.reportedCases, 50)
 };
 const covid19ImpactEstimator = (data) => {
-  const input = data;
+  const CasesReportedForImpact = impact;
+  const CasesReportedForSevereImpact = SevereImpact;
   return {
-    data: input,
-    impact: { impact },
-    SevereImpact: { SevereImpact }
+    data,
+    impact: {
+      currentlyInfected: CasesReportedForImpact,
+      infectionsByRequestedTime:
+      Math.trunc(impact.currentlyInfected
+      * (2 ** (InfectionsRequestedTime(input.periodType, input.timeToElapse))))
+      // severeCasesByRequestedTime:
+    },
+    SevereImpact: {
+      currentlyInfected: CasesReportedForSevereImpact,
+      infectionsByRequestedTime:
+      Math.trunc(SevereImpact.currentlyInfected
+      * (2 ** (InfectionsRequestedTime(input.periodType, input.timeToElapse)))),
+      severeCasesByRequestedTime: (this.infectionsByRequestedTime * 0.15)
+    }
   };
 };
 
 covid19ImpactEstimator(input, impact, SevereImpact);
 
-// export default covid19ImpactEstimator;
+
+export default covid19ImpactEstimator;
