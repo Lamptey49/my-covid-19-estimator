@@ -20,13 +20,13 @@ function InfectionsRequestedTime(typeofPeriod, ellapsedTime) {
   let convertime;
   switch (period) {
     case 'months':
-      convertime = Math.trunc((ellapsedTime / 3) * 30);
+      convertime = Math.trunc(ellapsedTime * 30);
       break;
     case 'weeks':
-      convertime = Math.trunc((ellapsedTime / 3) * 7);
+      convertime = Math.trunc(ellapsedTime * 7);
     // eslint-disable-next-line no-fallthrough
     default:
-      convertime = Math.trunc(ellapsedTime / 3);
+      convertime = Math.trunc(ellapsedTime * 2);
       break;
   }
   return convertime;
