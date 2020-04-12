@@ -38,26 +38,48 @@ const impact = {
 const SevereImpact = {
   currentlyInfected: casesReported(input.reportedCases, 50)
 };
-const covid19ImpactEstimator = (data) => {
-  const CasesReportedForImpact = impact;
-  const CasesReportedForSevereImpact = SevereImpact;
-  return {
-    data,
-    impact: {
-      currentlyInfected: CasesReportedForImpact,
-      infectionsByRequestedTime:
-      Math.trunc(impact.currentlyInfected
-      * (2 ** (InfectionsRequestedTime(input.periodType, input.timeToElapse))))
-      // severeCasesByRequestedTime:
-    },
-    SevereImpact: {
-      currentlyInfected: CasesReportedForSevereImpact,
-      infectionsByRequestedTime:
-      Math.trunc(SevereImpact.currentlyInfected
-      * (2 ** (InfectionsRequestedTime(input.periodType, input.timeToElapse))))
-    }
-  };
-};
+const CasesReportedForImpact = impact;
+const CasesReportedForSevereImpact = SevereImpact;
+const infectionsrequestedtimeimpact = impact.currentlyInfected
+* (2 ** Math.floor((InfectionsRequestedTime(input.periodType, input.timeToElapse) / 3)));
+const infectionsByRequestedTimesevereimpact = SevereImpact.currentlyInfected
+* (2 ** Math.floor((InfectionsRequestedTime(input.periodType, input.timeToElapse) / 3)));
+const severcasesbyrequestedtime = Math.floor(0.15 * infectionsrequestedtimeimpact);
+const severesevercasesbyrequestestime = Math.floor(0.15 * infectionsByRequestedTimesevereimpact);
+const hospitalbedsrequestedbytime = Math.floor(0.35 * input.totalHospitalBeds)
+ - severcasesbyrequestedtime;
+const severehospitalbedsrequestedbytime = Math.floor(0.35 * input.totalHospitalBeds)
+ - severesevercasesbyrequestestime;
+const casesforicurequestedtime = Math.floor(0.05 * infectionsrequestedtimeimpact);
+const severecasesforicurequestedtime = Math.floor(0.05 * infectionsByRequestedTimesevereimpact);
+const casesforventilatorforrequestedtime = Math.floor(0.02 * infectionsrequestedtimeimpact);
+const severecasesforventilator = Math.floor(0.02 * infectionsByRequestedTimesevereimpact);
+const dollarsinflight = (Math.floor(infectionsrequestedtimeimpact
+  * 0.65 * input.region.avgDailyIncomeInUSD) / 30);
+const severedollarsinflight = (Math.floor(infectionsByRequestedTimesevereimpact
+  * 0.65 * input.region.avgDailyIncomeInUSD) / 30);
+const covid19ImpactEstimator = (data) => ({
+  data,
+  impact: {
+    currentlyInfected: CasesReportedForImpact,
+    infectionsByRequestedTime: infectionsrequestedtimeimpact,
+    severeCaseByRequestedTime: severcasesbyrequestedtime,
+    hospitalBedsRequestedByTime: hospitalbedsrequestedbytime,
+    casesForICUByRequestedTime: casesforicurequestedtime,
+    casesForVentilatorRequestedTime: casesforventilatorforrequestedtime,
+    dollarsInFlight: dollarsinflight
+
+  },
+  SevereImpact: {
+    currentlyInfected: CasesReportedForSevereImpact,
+    infectionsByRequestedTime: infectionsByRequestedTimesevereimpact,
+    severeCaseByRequestedTime: severesevercasesbyrequestestime,
+    hospitalBedsRequestedByTime: severehospitalbedsrequestedbytime,
+    casesForICUByRequestedTime: severecasesforicurequestedtime,
+    casesForVentitlatorRequestedTime: severecasesforventilator,
+    dollarsInFlight: severedollarsinflight
+  }
+});
 
 covid19ImpactEstimator(input, impact, SevereImpact);
 
