@@ -26,6 +26,7 @@ function InfectionsRequestedTime(typeofPeriod, ellapsedTime) {
       convertime = Math.trunc(ellapsedTime * 7);
     // eslint-disable-next-line no-fallthrough
     default:
+      convertime = ellapsedTime;
       break;
   }
   return convertime;
