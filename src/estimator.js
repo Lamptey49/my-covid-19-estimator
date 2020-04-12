@@ -6,7 +6,7 @@ const input = {
     avgDailyIncomeInUSD: 5,
     avgDailyIncomePopulation: 0.71
   },
-  periodType: 'weeks',
+  periodType: 'days',
   timeToElapse: 58,
   reportedCases: 674,
   population: 66622705,
